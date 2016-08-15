@@ -40,6 +40,8 @@ proguard的基本配置，参考了android sdk中的proguard配置
 -optimizationpasses 5
 -allowaccessmodification
 -dontpreverify
+#指定不去忽略包可见的库类的成员
+-dontskipnonpubliclibraryclassmembers
 
 # The remainder of this file is identical to the non-optimized version
 # of the Proguard configuration file (except that the other file has
@@ -49,7 +51,7 @@ proguard的基本配置，参考了android sdk中的proguard配置
 -dontskipnonpubliclibraryclasses
 -verbose
 
--keepattributes *Annotation*
+-keepattributes *Annotation*,InnerClasses,Signature
 
 -keep public class com.google.vending.licensing.ILicensingService
 -dontnote com.google.vending.licensing.ILicensingService
@@ -103,6 +105,23 @@ proguard的基本配置，参考了android sdk中的proguard配置
 # platform version. We know about them, and they are safe.
 -dontnote android.support.**
 -dontwarn android.support.**
+-keep class android.support.** {*;}
+
+-dontwarn android.support.multidex.**
+-keep class android.support.multidex.**{
+    *;
+}
+
+-dontwarn android.support.v4.**
+-keep class android.support.v4.**{
+    *;
+}
+
+#android support v7
+-dontwarn android.support.v7.**
+-keep class android.support.v7.** {
+    *;
+}
 
 # Understand the @Keep support annotation.
 -keep class android.support.annotation.Keep
@@ -121,7 +140,6 @@ proguard的基本配置，参考了android sdk中的proguard配置
     @android.support.annotation.Keep <init>(...);
 }
 
--keepattributes InnerClasses
 #发布时去掉Log日志
 -assumenosideeffects class android.util.Log {
     public static boolean isLoggable(java.lang.String, int);
@@ -138,6 +156,7 @@ proguard的基本配置，参考了android sdk中的proguard配置
 -keep public class * extends android.content.ContentProvider                    # 保持哪些类不被混淆
 -keep public class * extends android.app.backup.BackupAgentHelper               # 保持哪些类不被混淆
 -keep public class * extends android.preference.Preference                      # 保持哪些类不被混淆
+-keep public class * extends android.os.IInterface
 
 -keep class * implements android.os.Parcelable {                                # 保持 Parcelable 不被混淆
   public static final android.os.Parcelable$Creator *;
@@ -159,4 +178,23 @@ proguard的基本配置，参考了android sdk中的proguard配置
 -keep class **.R$* {*;}
 -keep class **.R{*;}
 -dontwarn **.R$*
+
+-keepclassmembers class * {
+   public <init> (org.json.JSONObject);
+}
+
+-keepclassmembers class * {
+    void *(**On*Event);
+}
+#WebView
+-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+    public *;
+}
+-keepclassmembers class * extends android.webkit.webViewClient {    
+public void *(android.webkit.WebView, java.lang.String, android.graphics.Bitmap);
+public boolean *(android.webkit.WebView, java.lang.String);
+}
+-keepclassmembers class * extends android.webkit.webViewClient {
+public void *(android.webkit.webView, jav.lang.String);
+}
 ```
