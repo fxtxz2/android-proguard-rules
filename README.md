@@ -51,7 +51,7 @@ proguard的基本配置，参考了android sdk中的proguard配置
 -dontskipnonpubliclibraryclasses
 -verbose
 
--keepattributes *Annotation*,InnerClasses,Signature
+-keepattributes *Annotation*,InnerClasses,Signature,EnclosingMethod
 
 -keep public class com.google.vending.licensing.ILicensingService
 -dontnote com.google.vending.licensing.ILicensingService
