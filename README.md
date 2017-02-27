@@ -1,3 +1,4 @@
+jarsigner -verbose -keystore ./签名文件.jks -storepass 签名密码 -signedjar 生成apk ./没有.apk "别名"
 # android-proguard-rules
 proguard的基本配置，参考了android sdk中的proguard配置
 
